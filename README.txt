@@ -10,7 +10,7 @@ Decrypt the content of a given file using the key given in a file
 Name your file group#_AES.  The program will run from command line:
 
 
-Key generation-
+Key generation -
 
 python  group#_AES    -g    keysize    keyfile
 
@@ -19,7 +19,7 @@ java    group#_AES    -g      keysize    keyfile
 If invalid argument or keysize, let the user know and quit (do not crash).
 
 
-Encryption-
+Encryption -
 
 python  group#_AES    -e   plain.txt     keyfile  encrypted.txt
 
@@ -28,7 +28,7 @@ java    group#_AES    -e      plain.txt     keyfile   encrypted.txt
 If invalid argument or key, let the user know and quit (do not crash).
 
 
-Decryption-
+Decryption -
 
 python  group#_AES    -d   cipher.txt     keyfile  decrypted.txt
 
