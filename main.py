@@ -38,7 +38,7 @@ def readFileBytes(file):
 
 def encrypt(plainText, keyFile, cipherText):
     # plaintext = plaintext.read()
-    #keyFile.close()
+    #plaintext.close()
     #cipherText = AES.new(key, AES.MODE_EAX)##### just added this to see if this would work also.
     print("This is where encryption will happen")
     print("plainText=", plainText)
