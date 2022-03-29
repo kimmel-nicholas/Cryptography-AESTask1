@@ -36,22 +36,22 @@ def readFileBytes(file):
         print("Could not open file")
 
 
-def encrypt(plainText, keyFile, cipherText):
-    # plaintext = plaintext.read()
-    #plaintext.close()
-    #cipherText = AES.new(key, AES.MODE_EAX)##### just added this to see if this would work also.
+def encrypt(plainTextFile, keyFile, cipherText):
+    plainTextFile = plainTextFile.read()
+    plainTextFile.close()
+    cipherText = AES.new(key, AES.MODE_EAX)##### just added this to see if this would work also.
     print("This is where encryption will happen")
-    print("plainText=", plainText)
-    print("keyFile=", keyFile)
-    print("cipherText=", cipherText)# should this part not be included in the encrypt but only the decrypt function, 
+    #print("plainTextFile=", plainTextFile)
+    #print("keyFile=", keyFile)
+    #print("cipherText=", cipherText)# should this part not be included in the encrypt but only the decrypt function, 
                                     #since the encrption is for the plaintext? just asking
 
 
-def decrypt(cipherText, keyFile, plainText):
+def decrypt(cipherText, keyFile, plainTextFile):
     print("This is where decryption will happen")
     print("cipherText=", cipherText)
     print("keyFile=", keyFile)
-    print("plainText=", plainText)#should this part not be included in the decrypt but only the encrypt function,
+    print("plainTextFile=", plainTextFile)#should this part not be included in the decrypt but only the encrypt function,
                                   #since the decryption is for the ciphertext? just asking
 def generateKey(keySize, keyFile):
     print("This is where the key will be generated")
