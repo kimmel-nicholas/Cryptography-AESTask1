@@ -1,3 +1,4 @@
+from Crypto.Cipher import AES
 import sys
 
 #************Methods below are just a sort of outline that I was thinking about
@@ -36,18 +37,22 @@ def readFileBytes(file):
 
 
 def encrypt(plainText, keyFile, cipherText):
+    # plaintext = keyFile.read()
+    #keyFile.close()
+    #cipherText = AES.new(key, AES.MODE_EAX)##### just added this to see if this would work also.
     print("This is where encryption will happen")
     print("plainText=", plainText)
     print("keyFile=", keyFile)
-    print("cipherText=", cipherText)
+    print("cipherText=", cipherText)# should this part not be included in the encrypt but only the decrypt function, 
+                                    #since the encrption is for the plaintext? just asking
 
 
 def decrypt(cipherText, keyFile, plainText):
     print("This is where decryption will happen")
     print("cipherText=", cipherText)
     print("keyFile=", keyFile)
-    print("plainText=", plainText)
-
+    print("plainText=", plainText)#should this part not be included in the decrypt but only the encrypt function,
+                                  #since the decryption is for the ciphertext? just asking
 def generateKey(keySize, keyFile):
     print("This is where the key will be generated")
     print("keySize=", keySize)
