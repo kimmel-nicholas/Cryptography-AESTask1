@@ -61,10 +61,6 @@ if __name__ == '__main__':
         #arg 4 is the file the encrypted text will be stored in
         #
         try:
-            # key = int(sys.argv[3])
-            # encryptedText = encrypt(sys.argv[2])
-            # outputFile = sys.argv[4]
-            # writeToFile(encryptedText, outputFile)
             encrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
             print("Illegal entry")
