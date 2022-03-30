@@ -65,7 +65,7 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
 
 def generateKey(keySize, keyFile):
     keySize = int(keySize)/8        #The user enters the keysize which for AES is 128, 196, or 256. Since we're working with bytes I divide that number by 8
-
+    keySize = int(keySize)
     key = get_random_bytes(keySize)
     print(key)
     writeBytesToFile(key, keyFile)
