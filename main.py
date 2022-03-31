@@ -10,7 +10,7 @@ def writeStringToFile(string, outputFile):
     file.close()
 
 
-def convertBytesToString(bytesToConvert): 
+def convertBytesToString(bytesToConvert):
     newString = bytesToConvert.decode("utf-8")
     return newString
 
@@ -44,21 +44,25 @@ def readFileBytes(file):
 
 
 def encrypt(plainTextFile, keyFile, cipherTextFile):
-    plaintext = readFileBytes(plainTextFile)            # read plaintext as binary
+    plaintext = readFileBytes(plainTextFile) # read plaintext as binary
     key = readFileBytes(keyFile)                        # read keyFile to get key
-    cipher = AES.new(key, AES.MODE_EAX)                 # create cipher with key
+    print("This is the plain bytes\t\t", plaintext)
+    print("This is the key bytes\t\t", key)
+    cipher = AES.new(key, AES.MODE_ECB)                 # create cipher with key
     cipherText = cipher.encrypt(plaintext)              # encrypt plaintext and get cipher text
-    print(cipherText)
+    print("This is the nonce \t\t", cipher.nonce)
+    print("This is the cipher\t\t", cipherText)
     writeBytesToFile(cipherText, cipherTextFile)        # write ciphertext to cipherTextFile
 
 
 def decrypt(cipherTextFile, keyFile, plainTextFile):
     ciphertext = readFileBytes(cipherTextFile)
     key = readFileBytes(keyFile)
-    cipher = AES.new(key, AES.MODE_EAX)
+    cipher = AES.new(key, AES.MODE_ECB)
     plainText = cipher.decrypt(ciphertext)
+    print("Plain before\t\t", plainText)
     plainText = convertBytesToString(plainText)         #next thing to do is figure out how to convert the bytes/hex back into actual readable text
-    print(plainText)
+    print("Plain after \t\t", plainText)
     writeStringToFile(plainText, plainTextFile)
 
 
@@ -107,8 +111,3 @@ if __name__ == '__main__':
 
     else:
         print("Incorrect entry")
-
-
-
-
-
