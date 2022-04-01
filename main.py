@@ -1,6 +1,7 @@
 from Crypto.Cipher import AES
 import sys
 from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
 
 
 
@@ -8,11 +9,6 @@ def writeStringToFile(string, outputFile):
     file = open(outputFile, "w")
     file.write(string)
     file.close()
-
-
-def convertBytesToString(bytesToConvert):
-    newString = bytesToConvert.decode("utf-8")
-    return newString
 
 
 def writeBytesToFile(string, outputFile):
@@ -44,14 +40,13 @@ def readFileBytes(file):
 
 
 def encrypt(plainTextFile, keyFile, cipherTextFile):
-    plaintext = readFileBytes(plainTextFile) # read plaintext as binary
+    plaintext = readFileBytes(plainTextFile)            # read plaintext as binary
     key = readFileBytes(keyFile)                        # read keyFile to get key
-    print("This is the plain bytes\t\t", plaintext)
-    print("This is the key bytes\t\t", key)
+    if len(plaintext) % 16 != 0:
+        plaintext = pad(plaintext, 16)
     cipher = AES.new(key, AES.MODE_ECB)                 # create cipher with key
     cipherText = cipher.encrypt(plaintext)              # encrypt plaintext and get cipher text
-    print("This is the nonce \t\t", cipher.nonce)
-    print("This is the cipher\t\t", cipherText)
+    print("Cipher Text = ", cipherText)
     writeBytesToFile(cipherText, cipherTextFile)        # write ciphertext to cipherTextFile
 
 
@@ -60,18 +55,18 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
     key = readFileBytes(keyFile)
     cipher = AES.new(key, AES.MODE_ECB)
     plainText = cipher.decrypt(ciphertext)
-    print("Plain before\t\t", plainText)
-    plainText = convertBytesToString(plainText)         #next thing to do is figure out how to convert the bytes/hex back into actual readable text
-    print("Plain after \t\t", plainText)
+    print(plainText.decode())                           #decode returns string type... also it doesn't work
+    #plainText = unpad(plainText, 16)                   #I wasn't able to get this working
+    print(plainText)
     writeStringToFile(plainText, plainTextFile)
 
 
 
 def generateKey(keySize, keyFile):
-    keySize = int(keySize)/8        #The user enters the keysize which for AES is 128, 196, or 256. Since we're working with bytes I divide that number by 8
+    keySize = int(keySize)/8                           #The user enters the keysize which for AES is 128, 196, or 256. Since we're working with bytes divide that number by 8
     keySize = int(keySize)
     key = get_random_bytes(keySize)
-    print(key)
+    print("Key = ", key)
     writeBytesToFile(key, keyFile)
 
 
