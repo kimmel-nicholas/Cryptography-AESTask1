@@ -3,6 +3,25 @@ import sys
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 
+# I took out the original padding stuff which used the pad tool from
+# Cryptodome. I decided just to pad it with periods because then we actually
+# know what to expect from the padding..if that makes any sense.
+#
+# I still couldnt figure out how to make everything work with writing and
+# reading from files. I tried a bunch of things. To try to figure it out I
+# added a new method that you can try from the command line. I think by using this method
+# I/we can figure out what needs to change to make it work. The method which I named testerMeth,
+# generates a key, pads, encrypts, and decrypts successfully all within the method.
+# This way we can see how exactly it works without dealing with files which will hopefully help.
+#
+# To use the method, you just type whatever you want to encrypt into the command line which
+# you can see in the below example:
+#
+#     python main.py -t something
+#
+# Now that I think about it, I don't know how it works with spaces since it might see any
+# following words as a new arguument but regardless it works
+
 
 
 def writeStringToFile(string, outputFile):
@@ -42,8 +61,12 @@ def readFileBytes(file):
 def encrypt(plainTextFile, keyFile, cipherTextFile):
     plaintext = readFileBytes(plainTextFile)            # read plaintext as binary
     key = readFileBytes(keyFile)                        # read keyFile to get key
-    if len(plaintext) % 16 != 0:
-        plaintext = pad(plaintext, 16)
+    # if len(plaintext) % 16 != 0:
+    #     plaintext = pad(plaintext, 16)
+
+    while len(plaintext) % 16 != 0:
+        plaintext+=b'.'
+        print(plaintext)
     cipher = AES.new(key, AES.MODE_ECB)                 # create cipher with key
     cipherText = cipher.encrypt(plaintext)              # encrypt plaintext and get cipher text
     print("Cipher Text = ", cipherText)
@@ -55,9 +78,7 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
     key = readFileBytes(keyFile)
     cipher = AES.new(key, AES.MODE_ECB)
     plainText = cipher.decrypt(ciphertext)
-    print(plainText.decode())                           #decode returns string type... also it doesn't work
-    #plainText = unpad(plainText, 16)                   #I wasn't able to get this working
-    print(plainText)
+    plainText = plainText.decode("utf-8")                          #decode returns string type... also it doesn't work
     writeStringToFile(plainText, plainTextFile)
 
 
@@ -67,7 +88,24 @@ def generateKey(keySize, keyFile):
     keySize = int(keySize)
     key = get_random_bytes(keySize)
     print("Key = ", key)
+    print(type(key))
     writeBytesToFile(key, keyFile)
+
+def testerMeth(plain):
+    print("Plain: \t\t\t\t\t\t", plain)
+    plain = bytes(plain.encode())
+    print("Plain but encoded to utf8 and bytes type: \t", plain)
+    while len(plain) % 16 != 0:
+        plain+=b'.'
+    key = get_random_bytes(16)
+    print("Key: \t\t\t\t\t\t", key)
+    cipher = AES.new(key, AES.MODE_ECB)
+    cipherText = cipher.encrypt(plain)
+    print("Cipher text: \t\t\t\t\t", cipherText)
+    plainText = cipher.decrypt(cipherText)
+    print("Plain text after decryption: \t\t\t", plainText)
+
+
 
 
 if __name__ == '__main__':
@@ -93,6 +131,9 @@ if __name__ == '__main__':
         except TypeError as e:
             print("Illegal entry attempting to decrypt:", e)
 
+    elif sys.argv[1] == '-t':
+            testerMeth(sys.argv[2])
+
     elif sys.argv[1] == '-g':
         ####need to check for valid key sizes: 128, 196, 256
         # arg 2 is the keysize
@@ -106,3 +147,5 @@ if __name__ == '__main__':
 
     else:
         print("Incorrect entry")
+
+#remove current padding, try using bin file, convert to bytes but keep the same characters, changing string to bytes
