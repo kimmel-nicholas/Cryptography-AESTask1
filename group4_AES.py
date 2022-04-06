@@ -1,3 +1,14 @@
+Description: The purppose of this program is to generate a key and use the key to encrypt and decrypt a plaintext message. 
+             We are using the PyCryptodome crypto library to implement our program. We will use AES to generate a given key 
+             size and store it in a key file. We will also encrypt the message of the given file using the key given in a file. 
+             Next we will decrypt the message of the given file using the same key given in a file. 
+
+Authors: Justin Swain, Nicholas Kimmel,Lacreatia Harris, Katherine Cain
+
+Date: April 5, 2022
+
+
+
 import base64
 import json
 
