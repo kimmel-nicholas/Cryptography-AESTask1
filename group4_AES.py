@@ -82,8 +82,8 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
     print("The unencrypted message is: ", plainText)  # prints the decrypted message
 
 
-def generateKey(keySize, keyFile):
-    keySize = int(keySize)
+def generateKey(keySize, keyFile): # generates the key
+    keySize = int(keySize) # gets the key size that is a factor of 128
     if keySize in (128,196,256):
         keySize = int(keySize)/8
         keySize = int(keySize)
