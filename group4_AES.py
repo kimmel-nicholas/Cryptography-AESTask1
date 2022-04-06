@@ -1,12 +1,11 @@
-#Description: The purpose of this program is to generate a key and use the key to encrypt and decrypt a plaintext message. 
-#             We are using the PyCryptodome crypto library to implement our program. We will use AES to generate a given key 
-#             size and store it in a key file. We will also encrypt the message of the given file using the key given in a file. 
-#             Next we will decrypt the message of the given file using the same key given in a file. 
-#
-#Authors: Justin Swain, Nicholas Kimmel,Lacreatia Harris, Katherine Cain
-#
-#Date: April 5, 2022
+# Description: The purpose of this program is to generate a key and use the key to encrypt and decrypt a plaintext message. 
+#              We are using the PyCryptodome crypto library to implement our program. We will use AES to generate a given key 
+#              size and store it in a key file. We will also encrypt the message of the given file using the key given in a file. 
+#              Next we will decrypt the message of the given file using the same key given in a file. 
 
+# Authors: Justin Swain, Nicholas Kimmel,Lacreatia Harris, Katherine Cain
+
+# Date: April 5, 2022
 
 
 import base64
@@ -81,7 +80,6 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
     writeStringToFile(plainText, plainTextFile)
     print("The unencrypted message is: ", plainText) # prints the decrypted message
 
-
 def generateKey(keySize, keyFile): # generates the key
     keySize = int(keySize) # gets the key size that is a factor of 128
     if keySize in (128,196,256):
@@ -125,7 +123,6 @@ if __name__ == '__main__':
         except IndexError:
             print("Decryption requires three arguments: encrypted text file, "
                   "key file containing generated key, and decrypted text file to store message.")
-
 
     elif sys.argv[1] == '-g':
         # arg 2 is the keysize
