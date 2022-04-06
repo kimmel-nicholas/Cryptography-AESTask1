@@ -120,9 +120,9 @@ if __name__ == '__main__':
         try:
             decrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Illegal entry")
+            print("Invalid entry")
         except TypeError:
-            print("Illegal entry")
+            print("Invalid entry")
         except FileNotFoundError:
             print("File does not exist")
 
@@ -134,7 +134,7 @@ if __name__ == '__main__':
         try:
             generateKey(sys.argv[2], sys.argv[3])
         except ValueError:
-            print("Illegal entry")
+            print("Invalid entry")
 
         except IndexError:
             print("Generating a key takes two arguments: key size and a file name to store the key")
@@ -143,6 +143,6 @@ if __name__ == '__main__':
     # print("Illegal entry")
 
     else:
-        print("Illegal entry")
+        print("Invalid entry")
 
     print("Goodbye")
