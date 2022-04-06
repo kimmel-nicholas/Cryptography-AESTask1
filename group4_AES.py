@@ -106,7 +106,7 @@ if __name__ == '__main__':
         try:
             encrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Invalid entry")
+            print("Invalid key when encrypting")
         except IndexError:
             print("Encryption requires three arguments: plaintext file to encrypt, "
                   "key file containing generated key, and json file to store IV and cipher text")
@@ -119,7 +119,7 @@ if __name__ == '__main__':
         try:
             decrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Illegal entry")
+            print("Invalid key when decrypting")
         except TypeError:
             print("Illegal entry")
 
