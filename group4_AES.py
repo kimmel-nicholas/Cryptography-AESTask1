@@ -15,12 +15,10 @@ def writeStringToFile(string, outputFile):  # writes string to file
     file.write(string)
     file.close()
 
-
 def writeBytesToFile(string, outputFile): # writes bytes to file
     file = open(outputFile, "wb")
     file.write(string)
     file.close()
-
 
 def readFileString(file): # reads the file string
     try:
@@ -32,16 +30,11 @@ def readFileString(file): # reads the file string
     except FileNotFoundError: # if file not found it will return this message
         print("Could not open file")
 
-
 def readFileBytes(file): # reads the file bytes
         with open(file, "rb") as f:
             line = f.read()
             line = line.lower()
             return line
-
-
-
-
 
 def writeJsonToFile(jsonString, file): # writes the json to file
     try:
@@ -51,12 +44,10 @@ def writeJsonToFile(jsonString, file): # writes the json to file
     except FileNotFoundError: # if it cannot write json to file it will return this message
         print("Error writing json")
 
-
 def readFromJsonFile(file): # reads file json
     with open(file) as f:
         encryptedString = json.load(f)
         return encryptedString
-
 
 def encrypt(plainTextFile, keyFile, cipherTextFile):
     plaintext = readFileBytes(plainTextFile)  # read plaintext as binary
@@ -67,7 +58,6 @@ def encrypt(plainTextFile, keyFile, cipherTextFile):
     cipherText = b64encode(cipherTextBytes).decode('utf-8')
     result = json.dumps({'iv': iv, 'cipherText': cipherText})
     writeJsonToFile(result, cipherTextFile) # writes the encrypted message to file
-
 
 def decrypt(cipherTextFile, keyFile, plainTextFile):
     key = readFileBytes(keyFile) # read keyFile to get key
@@ -92,16 +82,12 @@ def generateKey(keySize, keyFile): # generates the key
     else:
         print("Invalid key size entry, AES key sizes: 128, 196, 256")
 
-
-
-
-
 if __name__ == '__main__':
     if sys.argv[1] == '-e':
         # arg 2 is the file containing the plain text/the text to be encrypted
         # arg 3 is the file containing the key that was generated
         # arg 4 is the file the encrypted text will be stored in
-        #
+        
         try:
             encrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
@@ -116,7 +102,7 @@ if __name__ == '__main__':
         # arg 2 is the file containing the text to be decrypted/the cipher text
         # arg 3 is the file containing the key that was generated
         # arg 4 is the file the decrypted text will be stored in
-        #
+        
         try:
             decrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
@@ -129,7 +115,6 @@ if __name__ == '__main__':
     elif sys.argv[1] == '-g':
         # arg 2 is the keysize
         # argument 3 is the file the key is stores in
-
 
         try:
             generateKey(sys.argv[2], sys.argv[3])
