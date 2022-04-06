@@ -10,56 +10,56 @@ from Crypto.Util.Padding import pad, unpad
 
 # Must use key size of factors of 128 like 16,32,48,64 etc to generate key with
 
-def writeStringToFile(string, outputFile):
+def writeStringToFile(string, outputFile): # writes string to file
     file = open(outputFile, "w")
     file.write(string)
     file.close()
 
 
-def writeBytesToFile(string, outputFile):
+def writeBytesToFile(string, outputFile): # writes bytes to file
     file = open(outputFile, "wb")
     file.write(string)
     file.close()
 
 
-def readFileString(file):
+def readFileString(file): # reads the file string
     try:
         with open(file) as f:
             line = f.read()
             line = line.lower()
             return line
 
-    except FileNotFoundError:
+    except FileNotFoundError: # if file not found it will return this message
         print("Could not open file")
 
 
-def readFileBytes(file):
+def readFileBytes(file): # reads the file bytes
     try:
         with open(file, "rb") as f:
             line = f.read()
             line = line.lower()
             return line
 
-    except FileNotFoundError:
+    except FileNotFoundError: # if file not found it will return this message
         print("Could not open file")
 
 
-def writeJsonToFile(jsonString, file):
+def writeJsonToFile(jsonString, file): # writes the json to file
     try:
         with open(file, 'w') as f:
             f.write(jsonString)
 
-    except FileNotFoundError:
+    except FileNotFoundError: # if cannot write json to file it will return this message
         print("Error writing json")
 
 
-def readFromJsonFile(file):
+def readFromJsonFile(file): # reads file json
     with open(file) as f:
         encryptedString = json.load(f)
-        return encryptedString
+        return encryptedString 
 
 
-def encrypt(plainTextFile, keyFile, cipherTextFile):
+def encrypt(plainTextFile, keyFile, cipherTextFile): 
     plaintext = readFileBytes(plainTextFile)  # read plaintext as binary
     key = readFileBytes(keyFile)  # read keyFile to get key
     cipher = AES.new(key, AES.MODE_CBC)  # create cipher with key
@@ -67,11 +67,11 @@ def encrypt(plainTextFile, keyFile, cipherTextFile):
     iv = b64encode(cipher.iv).decode('utf-8')
     cipherText = b64encode(cipherTextBytes).decode('utf-8')
     result = json.dumps({'iv': iv, 'cipherText': cipherText})
-    writeJsonToFile(result, 'jsonCiphertext.json')
+    writeJsonToFile(result, 'jsonCiphertext.json') # writes the encrypted message to file
 
 
 def decrypt(cipherTextFile, keyFile, plainTextFile):
-    key = readFileBytes(keyFile)
+    key = readFileBytes(keyFile) # read keyFile to get key
     b64 = readFromJsonFile('jsonCiphertext.json')
     iv = b64decode(b64['iv'])
     cipherText = b64decode(b64['cipherText'])
@@ -79,11 +79,11 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
     plainText = unpad(cipher.decrypt(cipherText), AES.block_size)
     plainText = plainText.decode('utf-8', 'ignore')
     writeStringToFile(plainText, plainTextFile)
-    print("The unencrypted message is: ", plainText)
+    print("The unencrypted message is: ", plainText) # prints the decrypted message
 
 
-def generateKey(keySize, keyFile):
-    keySize = int(keySize)
+def generateKey(keySize, keyFile): # generates the key
+    keySize = int(keySize) # gets the key size that is a factor of 128
     if keySize in (128,196,256):
         keySize = int(keySize)/8
         keySize = int(keySize)
