@@ -67,12 +67,12 @@ def encrypt(plainTextFile, keyFile, cipherTextFile):
     iv = b64encode(cipher.iv).decode('utf-8')
     cipherText = b64encode(cipherTextBytes).decode('utf-8')
     result = json.dumps({'iv': iv, 'cipherText': cipherText})
-    writeJsonToFile(result, 'jsonCiphertext.json')
+    writeJsonToFile(result, cipherTextFile)
 
 
 def decrypt(cipherTextFile, keyFile, plainTextFile):
     key = readFileBytes(keyFile)
-    b64 = readFromJsonFile('jsonCiphertext.json')
+    b64 = readFromJsonFile(cipherTextFile)
     iv = b64decode(b64['iv'])
     cipherText = b64decode(b64['cipherText'])
     cipher = AES.new(key, AES.MODE_CBC, iv)
@@ -107,6 +107,9 @@ if __name__ == '__main__':
             encrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
             print("Invalid entry")
+        except IndexError:
+            print("Encryption requires three arguments: plaintext file to encrypt, "
+                  "key file containing generated key, and json file to store IV and cipher text")
 
     elif sys.argv[1] == '-d':
         # arg 2 is the file containing the text to be decrypted/the cipher text
