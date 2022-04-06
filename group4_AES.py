@@ -10,50 +10,49 @@ from Crypto.Util.Padding import pad, unpad
 
 # Must use key size of factors of 128 like 16,32,48,64 etc to generate key with
 
-def writeStringToFile(string, outputFile): # writes string to file
+def writeStringToFile(string, outputFile):
     file = open(outputFile, "w")
     file.write(string)
     file.close()
 
 
-def writeBytesToFile(string, outputFile): # writes bytes to file
+def writeBytesToFile(string, outputFile):
     file = open(outputFile, "wb")
     file.write(string)
     file.close()
 
 
-def readFileString(file): # reads the file string
+def readFileString(file):
     try:
         with open(file) as f:
             line = f.read()
             line = line.lower()
             return line
 
-    except FileNotFoundError: # if file not found it will return this message
+    except FileNotFoundError:
         print("Could not open file")
 
 
-def readFileBytes(file): # reads the file bytes
-    try:
+def readFileBytes(file):
         with open(file, "rb") as f:
             line = f.read()
             line = line.lower()
             return line
 
-    except FileNotFoundError: # if file not found it will return this message
-        print("Could not open file")
 
 
-def writeJsonToFile(jsonString, file): # writes the json to file
+
+
+def writeJsonToFile(jsonString, file):
     try:
         with open(file, 'w') as f:
             f.write(jsonString)
 
-    except FileNotFoundError: # if cannot write json to file it will return this message
+    except FileNotFoundError:
         print("Error writing json")
 
 
-def readFromJsonFile(file): # reads file json
+def readFromJsonFile(file):
     with open(file) as f:
         encryptedString = json.load(f)
         return encryptedString
@@ -67,11 +66,11 @@ def encrypt(plainTextFile, keyFile, cipherTextFile):
     iv = b64encode(cipher.iv).decode('utf-8')
     cipherText = b64encode(cipherTextBytes).decode('utf-8')
     result = json.dumps({'iv': iv, 'cipherText': cipherText})
-    writeJsonToFile(result, cipherTextFile) # writes the encrypted message to file
+    writeJsonToFile(result, cipherTextFile)
 
 
 def decrypt(cipherTextFile, keyFile, plainTextFile):
-    key = readFileBytes(keyFile) # read keyFile to get key
+    key = readFileBytes(keyFile)
     b64 = readFromJsonFile(cipherTextFile)
     iv = b64decode(b64['iv'])
     cipherText = b64decode(b64['cipherText'])
@@ -79,11 +78,11 @@ def decrypt(cipherTextFile, keyFile, plainTextFile):
     plainText = unpad(cipher.decrypt(cipherText), AES.block_size)
     plainText = plainText.decode('utf-8', 'ignore')
     writeStringToFile(plainText, plainTextFile)
-    print("The unencrypted message is: ", plainText)  # prints the decrypted message
+    print("The unencrypted message is: ", plainText)
 
 
-def generateKey(keySize, keyFile): # generates the key
-    keySize = int(keySize) # gets the key size that is a factor of 128
+def generateKey(keySize, keyFile):
+    keySize = int(keySize)
     if keySize in (128,196,256):
         keySize = int(keySize)/8
         keySize = int(keySize)
@@ -106,15 +105,13 @@ if __name__ == '__main__':
         try:
             encrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Invalid key when encrypting")
+            print("Invalid entry")
+        except FileNotFoundError:
+            print("File does not exist")
         except IndexError:
             print("Encryption requires three arguments: plaintext file to encrypt, "
                   "key file containing generated key, and json file to store IV and cipher text")
-        except FileNotFoundError:
-            print("File does not exist")
-        except TypeError:
-            print("Illegal entry")
-            
+
     elif sys.argv[1] == '-d':
         # arg 2 is the file containing the text to be decrypted/the cipher text
         # arg 3 is the file containing the key that was generated
@@ -123,7 +120,7 @@ if __name__ == '__main__':
         try:
             decrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Invalid key when decrypting")
+            print("Illegal entry")
         except TypeError:
             print("Illegal entry")
         except FileNotFoundError:
@@ -138,6 +135,7 @@ if __name__ == '__main__':
             generateKey(sys.argv[2], sys.argv[3])
         except ValueError:
             print("Illegal entry")
+
         except IndexError:
             print("Generating a key takes two arguments: key size and a file name to store the key")
 
