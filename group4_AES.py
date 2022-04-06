@@ -102,7 +102,7 @@ if __name__ == '__main__':
         try:
             encrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Invalid entry")
+            print("Invalid key when encrypting")
         except FileNotFoundError:
             print("File does not exist")
         except IndexError:
@@ -117,7 +117,7 @@ if __name__ == '__main__':
         try:
             decrypt(sys.argv[2], sys.argv[3], sys.argv[4])
         except ValueError:
-            print("Invalid entry")
+            print("Invalid key when decryptying")
         except TypeError:
             print("Invalid entry")
         except FileNotFoundError:
