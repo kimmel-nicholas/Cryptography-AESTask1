@@ -112,6 +112,8 @@ if __name__ == '__main__':
                   "key file containing generated key, and json file to store IV and cipher text")
         except FileNotFoundError:
             print("File does not exist")
+        except TypeError:
+            print("Illegal entry")
             
     elif sys.argv[1] == '-d':
         # arg 2 is the file containing the text to be decrypted/the cipher text
