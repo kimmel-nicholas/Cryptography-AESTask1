@@ -122,6 +122,8 @@ if __name__ == '__main__':
             print("Invalid key when decrypting")
         except TypeError:
             print("Illegal entry")
+        except FileNotFoundError:
+            print("File does not exist")
 
     elif sys.argv[1] == '-g':
         # arg 2 is the keysize
