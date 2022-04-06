@@ -111,6 +111,10 @@ if __name__ == '__main__':
             print("Invalid entry")
         except FileNotFoundError:
             print("File does not exist")
+        except IndexError:
+            print("Decryption requires three arguments: encrypted text file, "
+                  "key file containing generated key, and decrypted text file to store message.")
+
 
     elif sys.argv[1] == '-g':
         # arg 2 is the keysize
